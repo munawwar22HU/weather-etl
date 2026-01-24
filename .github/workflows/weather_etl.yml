@@ -2,13 +2,15 @@ name: Hourly Weather ETL
 
 on:
   schedule:
-    - cron: '0 * * * *' # Runs at the start of every hour
-  workflow_dispatch: # Allows you to run it manually for testing
+    - cron: '0 * * * *'
+  workflow_dispatch: # This allows the "Run Workflow" button to appear
+
+permissions:
+  contents: write # Crucial for allowing the bot to push the .db file back
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -26,10 +28,10 @@ jobs:
           WEATHER_API_KEY: ${{ secrets.WEATHER_API_KEY }}
         run: python main.py
 
-      - name: Commit and Push changes
+      - name: Commit and Push .db file
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add weather.db
-          git commit -m "Automated: Hourly weather update" || exit 0
+          git commit -m "Automated: Hourly weather update" || echo "No changes to commit"
           git push
