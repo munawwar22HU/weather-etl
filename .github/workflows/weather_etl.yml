@@ -1,9 +1,13 @@
 name: Hourly Weather ETL
-
 on:
   schedule:
-    - cron: "* * * * *"   # Runs every 10 minutes (UTC)
+    - cron: "*/10 * * * *"   # Runs every 10 minutes (UTC)
   workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - 'weather.db'  # Don't trigger on database updates
+      - 'README.md'   # Optional: ignore README changes
 
 permissions:
   contents: write
@@ -11,43 +15,39 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           persist-credentials: true
-
+      
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.9"
           cache: "pip"
-
+      
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-
+      
       - name: Run ETL Script
         env:
           WEATHER_API_KEY: ${{ secrets.WEATHER_API_KEY }}
         run: python main.py
-
+      
       - name: Commit and Push .db file
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-
           # Add DB if it exists
           git add weather.db || true
-
           # Only commit if there are changes
           if git diff --cached --quiet; then
             echo "No changes to commit"
             exit 0
           fi
-
           git commit -m "Automated: weather update"
           git push
