@@ -2,26 +2,33 @@ name: Hourly Weather ETL
 
 on:
   schedule:
-    - cron: '*/10 * * * *' #
-  workflow_dispatch: # This allows the "Run Workflow" button to appear
+    - cron: "*/10 * * * *"   # Runs every 10 minutes (UTC)
+  workflow_dispatch:
 
 permissions:
-  contents: write # Crucial for allowing the bot to push the .db file back
+  contents: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.9'
+          python-version: "3.9"
+          cache: "pip"
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
       - name: Run ETL Script
         env:
@@ -30,8 +37,17 @@ jobs:
 
       - name: Commit and Push .db file
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add weather.db
-          git commit -m "Automated: Hourly weather update" || echo "No changes to commit"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Add DB if it exists
+          git add weather.db || true
+
+          # Only commit if there are changes
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+
+          git commit -m "Automated: weather update"
           git push

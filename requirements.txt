@@ -1,7 +1,7 @@
 requests==2.31.0
+numpy==1.26.4
 pandas==2.1.1
 sqlalchemy==2.0.21
 python-dotenv==1.0.0
-streamlit
-plotly
-dotenv
+streamlit==1.50.0
+plotly==6.5.2
