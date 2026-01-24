@@ -2,7 +2,7 @@ name: Hourly Weather ETL
 
 on:
   schedule:
-    - cron: "*/10 * * * *"   # Runs every 10 minutes (UTC)
+    - cron: "* * * * *"   # Runs every 10 minutes (UTC)
   workflow_dispatch:
 
 permissions:
