@@ -25,3 +25,11 @@ jobs:
         env:
           WEATHER_API_KEY: ${{ secrets.WEATHER_API_KEY }}
         run: python main.py
+
+      - name: Commit and Push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add weather.db
+          git commit -m "Automated: Hourly weather update" || exit 0
+          git push
