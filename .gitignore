@@ -1,0 +1,15 @@
+# Credentials
+.env
+
+# Databases
+*.db
+*.sqlite
+
+# Python junk
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Environments
+env/
+venv/
