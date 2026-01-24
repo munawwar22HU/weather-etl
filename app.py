@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 import plotly.express as px
 
 # 1. Database Connection
-engine = create_engine("sqlite:///weather_data.db")
+engine = create_engine("sqlite:///weather.db")
 
 def load_data():
     query = "SELECT * FROM weather_reports ORDER BY timestamp DESC"

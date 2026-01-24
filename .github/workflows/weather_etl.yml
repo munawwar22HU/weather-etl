@@ -50,4 +50,4 @@ jobs:
             exit 0
           fi
           git commit -m "Automated: weather update"
-          git push
+          git push origin HEAD:main
