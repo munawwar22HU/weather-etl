@@ -10,7 +10,7 @@ The pipeline follows a modular functional design to ensure scalability and ease 
 
 ### 🛠️ Tech Stack
 
-* **Language:** Python 3.9+
+* **Language:** Python 3.10+
 * **Data Handling:** Pandas, SQLAlchemy
 * **Storage:** SQLite (Development) / PostgreSQL (Production)
 * **Orchestration:** GitHub Actions (Hourly Cron)
