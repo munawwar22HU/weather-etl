@@ -4,6 +4,10 @@
 
 An automated ETL pipeline that fetches real-time weather and air quality metrics for global cities, transforms semi-structured JSON data into an analytical schema, and persists it to a SQL database.
 
+### 🌐 Live Demo
+
+Explore the deployed interactive dashboard: https://weather-etl-openweather.streamlit.app/
+
 ### 🏗️ Architecture
 
 The pipeline follows a modular functional design to ensure scalability and ease of debugging.
